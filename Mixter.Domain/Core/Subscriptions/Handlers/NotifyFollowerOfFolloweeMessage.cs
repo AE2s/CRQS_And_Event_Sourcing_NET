@@ -3,7 +3,9 @@
 namespace Mixter.Domain.Core.Subscriptions.Handlers
 {
     [Handler]
-    public class NotifyFollowerOfFolloweeMessage
+    public class NotifyFollowerOfFolloweeMessage :
+        IEventHandler<MessageQuacked>,
+        IEventHandler<MessageRequacked>
     {
         private IFollowersRepository _followersRepository;
         private ISubscriptionsRepository _subscriptionsRepository;
