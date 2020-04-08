@@ -41,7 +41,9 @@ namespace Mixter.Domain.Core.Messages
         public void Delete(IEventPublisher eventPublisher, UserId userId)
         {
             if (!_projection.Quackers.Contains(userId))
+            {
                 return;
+            }
 
             eventPublisher.Publish(new MessageDeleted(_projection.Id,userId));
         }
