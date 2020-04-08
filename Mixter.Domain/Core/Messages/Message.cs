@@ -38,6 +38,7 @@ namespace Mixter.Domain.Core.Messages
             eventPublisher.Publish(evt);
         }
 
+        [Command]
         public void Delete(IEventPublisher eventPublisher, UserId userId)
         {
             if (!_projection.Quackers.Contains(userId))
@@ -45,7 +46,11 @@ namespace Mixter.Domain.Core.Messages
                 return;
             }
 
-            eventPublisher.Publish(new MessageDeleted(_projection.Id,userId));
+
+            var evt = new MessageDeleted(_projection.Id, userId);
+
+            eventPublisher.Publish(evt);
+
         }
 
         [Projection]
@@ -66,6 +71,7 @@ namespace Mixter.Domain.Core.Messages
             {
                 AddHandler<MessageQuacked>(When);
                 AddHandler<MessageRequacked>(When);
+                AddHandler<MessageDeleted>(When);
             }
 
             private void When(MessageQuacked evt)
@@ -78,6 +84,12 @@ namespace Mixter.Domain.Core.Messages
             private void When(MessageRequacked evt)
             {
                 _quackers.Add(evt.Requacker);
+            }
+
+            private void When(MessageDeleted evt)
+            {
+                if (_quackers.Contains(evt.Deleter))
+                    _quackers.Remove(evt.Deleter);
             }
         }
 
