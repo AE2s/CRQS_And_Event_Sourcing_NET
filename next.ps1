@@ -1,10 +1,8 @@
 git add -A 
 git commit -m "Resolve test"
-git merge step3-test4
+git merge step4-test1
 Write-Host ""
 Write-Host ""
-Write-Host -f green "========================"
-Write-Host -f green "===  STEP 3 - Test 4 ==="
-Write-Host -f green "========================"
+Get-Content stepsDoc/step4.txt | Write-Host -f green
 Write-Host ""
 Write-Host ""
