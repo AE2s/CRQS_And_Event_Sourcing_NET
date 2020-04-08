@@ -27,5 +27,16 @@ namespace Mixter.Domain.Core.Subscriptions.Handlers
             }
             
         }
+
+        public void Handle(MessageRequacked evt)
+        {
+            var userSubscriptions = _subscriptionsRepository.GetSubscriptionsOfUser(evt.Requacker);
+            
+            foreach (var userSubscription in userSubscriptions)
+            {
+                userSubscription.NotifyFollower(_eventPublisher, evt.Id);
+            }
+
+        }
     }
 }
