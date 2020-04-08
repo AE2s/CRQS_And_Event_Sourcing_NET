@@ -17,5 +17,10 @@ namespace Mixter.Domain.Core.Messages.Handlers
         {
             _timelineMessageRepository.Save(new TimelineMessageProjection(evt.Author, evt.Author, evt.Content, evt.Id));
         }
+
+        public void Handle(MessageDeleted evt)
+        {
+            _timelineMessageRepository.Delete(evt.MessageId);
+        }
     }
 }
