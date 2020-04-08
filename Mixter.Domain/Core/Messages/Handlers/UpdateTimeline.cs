@@ -13,10 +13,9 @@ namespace Mixter.Domain.Core.Messages.Handlers
             _timelineMessageRepository = timelineMessageRepository;
         }
 
-        public void Handle(IDomainEvent evt)
+        public void Handle(MessageQuacked evt)
         {
-            var messageQuacked = (MessageQuacked) evt;
-            _timelineMessageRepository.Save(new TimelineMessageProjection(messageQuacked.Author, messageQuacked.Author,messageQuacked.Content,messageQuacked.Id));
+            _timelineMessageRepository.Save(new TimelineMessageProjection(evt.Author, evt.Author, evt.Content, evt.Id));
         }
     }
 }
