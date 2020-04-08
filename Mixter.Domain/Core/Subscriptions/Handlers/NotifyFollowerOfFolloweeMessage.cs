@@ -1,4 +1,5 @@
 ﻿using Mixter.Domain.Core.Messages.Events;
+using Mixter.Domain.Core.Subscriptions.Events;
 
 namespace Mixter.Domain.Core.Subscriptions.Handlers
 {
@@ -18,7 +19,13 @@ namespace Mixter.Domain.Core.Subscriptions.Handlers
 
         public void Handle(MessageQuacked evt)
         {
-            throw new System.NotImplementedException();
+            var userSubscriptions = _subscriptionsRepository.GetSubscriptionsOfUser(evt.Author);
+            
+            foreach (var userSubscription in userSubscriptions)
+            {
+               userSubscription.NotifyFollower(_eventPublisher, evt.Id);
+            }
+            
         }
     }
 }
