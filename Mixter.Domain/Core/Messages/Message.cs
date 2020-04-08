@@ -38,6 +38,14 @@ namespace Mixter.Domain.Core.Messages
             eventPublisher.Publish(evt);
         }
 
+        public void Delete(IEventPublisher eventPublisher, UserId userId)
+        {
+            if (!_projection.Quackers.Contains(userId))
+                return;
+
+            eventPublisher.Publish(new MessageDeleted(_projection.Id,userId));
+        }
+
         [Projection]
         private class DecisionProjection : DecisionProjectionBase
         {
@@ -70,5 +78,6 @@ namespace Mixter.Domain.Core.Messages
                 _quackers.Add(evt.Requacker);
             }
         }
+
     }
 }
