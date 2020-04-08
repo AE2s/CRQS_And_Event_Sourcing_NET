@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Mixter.Domain.Core.Messages;
 using Mixter.Domain.Core.Subscriptions.Events;
 using Mixter.Domain.Identity;
 
@@ -28,6 +29,12 @@ namespace Mixter.Domain.Core.Subscriptions
         {
             var id =(SubscriptionId)subscriptionIds.First();
             evt.Publish(new UserUnfollowed(id));
+        }
+
+        public void NotifyFollower(IEventPublisher evt, MessageId messageId)
+        {
+            var id = (SubscriptionId)subscriptionIds.First();
+            evt.Publish(new FolloweeMessageQuacked(id,messageId));
         }
     }
 }
