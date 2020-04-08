@@ -34,6 +34,9 @@ namespace Mixter.Domain.Core.Messages
                 return;
             }
 
+            if(_projection.IsDeleted)
+                return;
+            
             var evt = new MessageRequacked(_projection.Id, requacker);
             eventPublisher.Publish(evt);
         }
@@ -62,6 +65,8 @@ namespace Mixter.Domain.Core.Messages
 
             public UserId Author { get; private set; }
 
+            public bool IsDeleted { get; private set; }
+
             public IEnumerable<UserId> Quackers
             {
                 get { return _quackers; }
@@ -89,7 +94,10 @@ namespace Mixter.Domain.Core.Messages
             private void When(MessageDeleted evt)
             {
                 if (_quackers.Contains(evt.Deleter))
+                {
                     _quackers.Remove(evt.Deleter);
+                    IsDeleted = true;
+                }
             }
         }
 
